@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     @IBOutlet weak var display: UILabel!
+    private var brain = CalculatorBrain()
     
     var userInMiddleOfTyping = false
     // declare property with getter and setter
@@ -38,16 +39,15 @@ class ViewController: UIViewController {
     }
     
     @IBAction func performOperation(_ sender: UIButton) {
-        userInMiddleOfTyping = false
+        if userInMiddleOfTyping {
+            brain.setOperand(displayValue)
+            userInMiddleOfTyping = false
+        }
         if let mathSymbol = sender.currentTitle {
-            switch mathSymbol {
-                case "pi":
-                    displayValue = Double.pi
-                case "clear":
-                    displayValue = 0.0
-            default:
-                break
-            }
+            brain.performOperation(mathSymbol)
+        }
+        if let result = brain.result {
+            displayValue = result
         }
     }
   
